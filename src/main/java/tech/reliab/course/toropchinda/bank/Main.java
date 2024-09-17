@@ -105,43 +105,35 @@ public class Main {
 
     public static void taskOutAll(){
         // Bank
-        System.out.println("Bank:");
         BankService service1 = new BankServiceImpl();
         System.out.println(service1.get(Long.parseLong("3")).toString());
 
         // BankAtm
-        System.out.println("BankAtm:");
         BankAtmService service2 = new BankAtmServiceImpl();
         System.out.println(service2.get(Long.parseLong("2")).toString());
 
         // BankOffice
-        System.out.println("BankOffice:");
         BankOfficeService service3 = new BankOfficeServiceImpl();
         System.out.println(service3.get(Long.parseLong("1")).toString());
 
         // CreditAccount
-        System.out.println("CreditAccount:");
         CreditAccountService service4 = new CreditAccountServiceImpl();
         System.out.println(service4.get(Long.parseLong("13")).toString());
 
         // Employee
-        System.out.println("Employee:");
         EmployeeService service5 = new EmployeeServiceImpl();
         System.out.println(service5.get(Long.parseLong("11")).toString());
 
         //PaymentAccount
-        System.out.println("PaymentAccount:");
         PaymentAccountService service6 = new PaymentAccountServiceImpl();
         System.out.println(service6.get(Long.parseLong("16")).toString());
 
         // User
-        System.out.println("User:");
         UserService service7 = new UserServiceImpl();
         System.out.println(service7.get(Long.parseLong("1")).toString());
     }
 
     public static void main(String[] args) {
-        taskInitialized();
         taskOutAll();
     }
 }

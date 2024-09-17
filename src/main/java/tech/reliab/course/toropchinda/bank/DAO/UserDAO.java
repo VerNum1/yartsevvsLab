@@ -1,5 +1,6 @@
 package tech.reliab.course.toropchinda.bank.DAO;
 
+import tech.reliab.course.toropchinda.bank.DataSource.DataSource;
 import tech.reliab.course.toropchinda.bank.entity.User;
 import tech.reliab.course.toropchinda.bank.utils.Utils;
 
@@ -24,8 +25,7 @@ public class UserDAO implements DAO<User, Long>{
     public Optional<User> get(Long id) {
         String sql = "SELECT * FROM public.user where id=?";
 
-        try (Connection conn = DriverManager.getConnection(
-                "jdbc:postgresql://localhost:5432/db", "postgres", "1234")) {
+        try (Connection conn = DataSource.getConnection()) {
             PreparedStatement statement = conn.prepareStatement(sql);
             statement.setLong(1, id);
             ResultSet rs = statement.executeQuery();
@@ -52,8 +52,7 @@ public class UserDAO implements DAO<User, Long>{
         String sql = "SELECT * FROM public.user";
         List<User> users = new ArrayList<>();
 
-        try (Connection conn = DriverManager.getConnection(
-                "jdbc:postgresql://localhost:5432/db", "postgres", "1234");
+        try (Connection conn = DataSource.getConnection();
              PreparedStatement statement = conn.prepareStatement(sql);
              ResultSet rs = statement.executeQuery()) {
             while (rs.next()) {
@@ -76,8 +75,7 @@ public class UserDAO implements DAO<User, Long>{
         String sql = "INSERT INTO public.user (full_name, date_of_birth, workplace, monthly_income," +
                 " banks_used, credit_rating) VALUES (?,?,?,?,?,?)";
 
-        try (Connection conn = DriverManager.getConnection(
-                "jdbc:postgresql://localhost:5432/db", "postgres", "1234");
+        try (Connection conn = DataSource.getConnection();
              PreparedStatement statement = conn.prepareStatement(sql)) {
             statement.setString(1, user.getFullName());
             statement.setDate(2, (Date) user.getDateOfBirth());
@@ -121,8 +119,7 @@ public class UserDAO implements DAO<User, Long>{
                 ", credit_account_id=?, payment_account_id=?, credit_rating=? "
                 + "WHERE public.user.id=?";
 
-        try (Connection conn = DriverManager.getConnection(
-                "jdbc:postgresql://localhost:5432/db", "postgres", "1234");) {
+        try (Connection conn = DataSource.getConnection()) {
             PreparedStatement statement = conn.prepareStatement(updateQuery);
             statement.setString(1, user.getFullName());
             statement.setDate(2, (Date) user.getDateOfBirth());
@@ -150,8 +147,7 @@ public class UserDAO implements DAO<User, Long>{
         String sql = "DELETE FROM public.user where public.user.id =?";
 
         try {
-            Connection conn = DriverManager.getConnection(
-                    "jdbc:postgresql://localhost:5432/db", "postgres", "1234");
+            Connection conn = DataSource.getConnection();
             PreparedStatement statement = conn.prepareStatement(sql);
             statement.setLong(1, id);
             statement.executeUpdate();

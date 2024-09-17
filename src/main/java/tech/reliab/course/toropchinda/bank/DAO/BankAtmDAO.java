@@ -1,5 +1,6 @@
 package tech.reliab.course.toropchinda.bank.DAO;
 
+import tech.reliab.course.toropchinda.bank.DataSource.DataSource;
 import tech.reliab.course.toropchinda.bank.entity.BankAtm;
 
 import java.sql.*;
@@ -23,8 +24,7 @@ public class BankAtmDAO implements DAO<BankAtm, Long> {
     public Optional<BankAtm> get(Long id) {
         String sql = "SELECT * FROM bank_atm where id=?";
 
-        try (Connection conn = DriverManager.getConnection(
-                "jdbc:postgresql://localhost:5432/db", "postgres", "1234")) {
+        try (Connection conn = DataSource.getConnection()) {
             PreparedStatement statement = conn.prepareStatement(sql);
             statement.setLong(1, id);
             ResultSet rs = statement.executeQuery();
@@ -51,8 +51,7 @@ public class BankAtmDAO implements DAO<BankAtm, Long> {
         String sql = "SELECT * FROM bank_atm";
         List<BankAtm> atms = new ArrayList<>();
 
-        try (Connection conn = DriverManager.getConnection(
-                "jdbc:postgresql://localhost:5432/db", "postgres", "1234");
+        try (Connection conn = DataSource.getConnection();
              PreparedStatement statement = conn.prepareStatement(sql);
              ResultSet rs = statement.executeQuery()) {
             while (rs.next()) {
@@ -76,8 +75,7 @@ public class BankAtmDAO implements DAO<BankAtm, Long> {
                 " employee_id, issues_money, deposit_money, total_money, cost_maintenance) VALUES " +
                 "(?,?,?,?,?,?,?,?,?,?)";
 
-        try (Connection conn = DriverManager.getConnection(
-                "jdbc:postgresql://localhost:5432/db", "postgres", "1234");
+        try (Connection conn = DataSource.getConnection();
              PreparedStatement statement = conn.prepareStatement(sql)) {
             Long bankId = bankAtm.getBankId();
             Long bankOfficeId = bankAtm.getBankOfficeId();
@@ -139,8 +137,7 @@ public class BankAtmDAO implements DAO<BankAtm, Long> {
                 " employee_id=?, issues_money=?, deposit_money=?, total_money=?, cost_maintenance=? "
                 + "WHERE bank_atm.id=?";
 
-        try (Connection conn = DriverManager.getConnection(
-                "jdbc:postgresql://localhost:5432/db", "postgres", "1234");) {
+        try (Connection conn = DataSource.getConnection()) {
             PreparedStatement statement = conn.prepareStatement(updateQuery);
             statement.setString(1, bankAtm.getName());
             statement.setString(2, bankAtm.getAddress());
@@ -170,8 +167,7 @@ public class BankAtmDAO implements DAO<BankAtm, Long> {
         String sql = "DELETE FROM bank_atm where bank_atm.id =?";
 
         try {
-            Connection conn = DriverManager.getConnection(
-                    "jdbc:postgresql://localhost:5432/db", "postgres", "1234");
+            Connection conn = DataSource.getConnection();
             PreparedStatement statement = conn.prepareStatement(sql);
             statement.setLong(1, id);
             statement.executeUpdate();

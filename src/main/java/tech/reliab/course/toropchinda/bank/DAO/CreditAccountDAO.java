@@ -1,5 +1,6 @@
 package tech.reliab.course.toropchinda.bank.DAO;
 
+import tech.reliab.course.toropchinda.bank.DataSource.DataSource;
 import tech.reliab.course.toropchinda.bank.entity.CreditAccount;
 
 import java.sql.*;
@@ -23,8 +24,7 @@ public class CreditAccountDAO implements DAO<CreditAccount, Long> {
     public Optional<CreditAccount> get(Long id) {
         String sql = "SELECT * FROM credit_account where id=?";
 
-        try (Connection conn = DriverManager.getConnection(
-                "jdbc:postgresql://localhost:5432/db", "postgres", "1234")) {
+        try (Connection conn = DataSource.getConnection()) {
             PreparedStatement statement = conn.prepareStatement(sql);
             statement.setLong(1, id);
             ResultSet rs = statement.executeQuery();
@@ -51,8 +51,7 @@ public class CreditAccountDAO implements DAO<CreditAccount, Long> {
         String sql = "SELECT * FROM credit_account";
         List<CreditAccount> credAccs = new ArrayList<>();
 
-        try (Connection conn = DriverManager.getConnection(
-                "jdbc:postgresql://localhost:5432/db", "postgres", "1234");
+        try (Connection conn = DataSource.getConnection();
              PreparedStatement statement = conn.prepareStatement(sql);
              ResultSet rs = statement.executeQuery()) {
             while (rs.next()) {
@@ -76,8 +75,7 @@ public class CreditAccountDAO implements DAO<CreditAccount, Long> {
                 " credit_monthly_duration, credit_amount, monthly_payment, interest_rate, employee_id, payment_account_id) " +
                 "VALUES (?,?,?,?,?,?,?,?,?,?)";
 
-        try (Connection conn = DriverManager.getConnection(
-                "jdbc:postgresql://localhost:5432/db", "postgres", "1234");
+        try (Connection conn = DataSource.getConnection();
              PreparedStatement statement = conn.prepareStatement(sql)) {
 
             statement.setLong(1, creditAccount.getUserId());
@@ -117,8 +115,7 @@ public class CreditAccountDAO implements DAO<CreditAccount, Long> {
                 " credit_amount=?, monthly_payment=?, interest_rate=?, employee_id=?, payment_account_id=? "
                 + "WHERE credit_account.id=?";
 
-        try (Connection conn = DriverManager.getConnection(
-                "jdbc:postgresql://localhost:5432/db", "postgres", "1234");) {
+        try (Connection conn = DataSource.getConnection()) {
             PreparedStatement statement = conn.prepareStatement(updateQuery);
             statement.setLong(1, creditAccount.getUserId());
             statement.setString(2, creditAccount.getBankName());
@@ -148,8 +145,7 @@ public class CreditAccountDAO implements DAO<CreditAccount, Long> {
         String sql = "DELETE FROM credit_account where credit_account.id =?";
 
         try {
-            Connection conn = DriverManager.getConnection(
-                    "jdbc:postgresql://localhost:5432/db", "postgres", "1234");
+            Connection conn = DataSource.getConnection();
             PreparedStatement statement = conn.prepareStatement(sql);
             statement.setLong(1, id);
             statement.executeUpdate();

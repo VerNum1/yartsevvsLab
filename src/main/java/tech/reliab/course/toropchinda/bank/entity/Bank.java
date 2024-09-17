@@ -5,8 +5,8 @@ import lombok.*;
 // Entity of database  bank
 @Data
 @Builder
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 public class Bank {
     Long id;
     String name;

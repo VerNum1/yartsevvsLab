@@ -1,5 +1,6 @@
 package tech.reliab.course.toropchinda.bank.DAO;
 
+import tech.reliab.course.toropchinda.bank.DataSource.DataSource;
 import tech.reliab.course.toropchinda.bank.entity.Employee;
 
 import java.sql.*;
@@ -23,8 +24,7 @@ public class EmployeeDAO implements DAO<Employee, Long> {
     public Optional<Employee> get(Long id) {
         String sql = "SELECT * FROM employee where id=?";
 
-        try (Connection conn = DriverManager.getConnection(
-                "jdbc:postgresql://localhost:5432/db", "postgres", "1234")) {
+        try (Connection conn = DataSource.getConnection()) {
             PreparedStatement statement = conn.prepareStatement(sql);
             statement.setLong(1, id);
             ResultSet rs = statement.executeQuery();
@@ -51,8 +51,7 @@ public class EmployeeDAO implements DAO<Employee, Long> {
         String sql = "SELECT * FROM employee";
         List<Employee> employees = new ArrayList<>();
 
-        try (Connection conn = DriverManager.getConnection(
-                "jdbc:postgresql://localhost:5432/db", "postgres", "1234");
+        try (Connection conn = DataSource.getConnection();
              PreparedStatement statement = conn.prepareStatement(sql);
              ResultSet rs = statement.executeQuery()) {
             while (rs.next()) {
@@ -76,8 +75,7 @@ public class EmployeeDAO implements DAO<Employee, Long> {
                 "office_work_format, bank_office_id, credit_services, salary) VALUES " +
                 "(?,?,?,?,?,?,?,?)";
 
-        try (Connection conn = DriverManager.getConnection(
-                "jdbc:postgresql://localhost:5432/db", "postgres", "1234");
+        try (Connection conn = DataSource.getConnection();
              PreparedStatement statement = conn.prepareStatement(sql)) {
             Long bankId = employee.getBankId();
 
@@ -113,8 +111,7 @@ public class EmployeeDAO implements DAO<Employee, Long> {
                 " bank_office_id=?, credit_services=?, salary=? "
                 + "WHERE employee.id=?";
 
-        try (Connection conn = DriverManager.getConnection(
-                "jdbc:postgresql://localhost:5432/db", "postgres", "1234");) {
+        try (Connection conn = DataSource.getConnection()) {
             PreparedStatement statement = conn.prepareStatement(updateQuery);
             statement.setString(1, employee.getFullName());
             statement.setDate(2, (Date) employee.getDateOfBirth());
@@ -142,8 +139,7 @@ public class EmployeeDAO implements DAO<Employee, Long> {
         String sql = "DELETE FROM employee where employee.id =?";
 
         try {
-            Connection conn = DriverManager.getConnection(
-                    "jdbc:postgresql://localhost:5432/db", "postgres", "1234");
+            Connection conn = DataSource.getConnection();
             PreparedStatement statement = conn.prepareStatement(sql);
             statement.setLong(1, id);
             statement.executeUpdate();
