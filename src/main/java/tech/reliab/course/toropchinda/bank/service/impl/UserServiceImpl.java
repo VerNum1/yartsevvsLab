@@ -12,28 +12,32 @@ import java.util.List;
  * @see tech.reliab.course.toropchinda.bank.DAO.UserDAO
  */
 public class UserServiceImpl implements UserService {
-    private final UserDAO bankDAO = new UserDAO();
+    private final UserDAO userDAO = new UserDAO();
 
     @Override
     public User get(long userId) {
-        return bankDAO.get(userId).orElse(null);
+        return userDAO.get(userId).orElse(null);
     }
 
     @Override
     public List<User> getAll() {
-        return bankDAO.getAll();
+        return userDAO.getAll();
     }
 
     @Override
     public void save(User user) {
-        bankDAO.save(user);
+        userDAO.save(user);
     }
 
+
     public void update(User user) {
-        bankDAO.update(user);
+        userDAO.update(user);
     }
 
     public void delete(long userId) {
-        bankDAO.delete(userId);
+        userDAO.delete(userId);
     }
+
+    @Override
+    public void outputUserInfo(Long id){ userDAO.outputUserInfo(id); }
 }

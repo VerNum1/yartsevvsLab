@@ -18,7 +18,7 @@ public class User {
     Date dateOfBirth;
     String workplace;
     Integer monthlyIncome;
-    String[] banksUsed;
+    String bankUsed;
     Long creditAccountId;
     Long paymentAccountId;
     Integer creditRating;

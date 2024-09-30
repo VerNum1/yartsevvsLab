@@ -2,6 +2,8 @@ package tech.reliab.course.toropchinda.bank.DAO;
 
 import tech.reliab.course.toropchinda.bank.DataSource.DataSource;
 import tech.reliab.course.toropchinda.bank.entity.Bank;
+import tech.reliab.course.toropchinda.bank.service.BankService;
+import tech.reliab.course.toropchinda.bank.service.impl.BankServiceImpl;
 import tech.reliab.course.toropchinda.bank.utils.Utils;
 
 import java.sql.*;
@@ -149,6 +151,55 @@ public class BankDAO implements DAO<Bank, Long> {
             PreparedStatement statement = conn.prepareStatement(sql);
             statement.setLong(1, id);
             statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void outputAllBankInfo(Long id) {
+        BankService service = new BankServiceImpl();
+        Bank bank = service.get(id);
+
+        String sql_offices = "SELECT * FROM bank_office WHERE bank_id = ?";
+        String sql_atms = "SELECT * FROM bank_atm WHERE bank_id = ?";
+        String sql_employees = "SELECT * FROM employee WHERE bank_id = ?";
+        String sql_users = "SELECT * FROM public.user WHERE bank_used = ?";
+
+        try {
+            Connection conn = DataSource.getConnection();
+
+            PreparedStatement ps_offices = conn.prepareStatement(sql_offices);
+            ps_offices.setLong(1, id);
+            PreparedStatement ps_atms = conn.prepareStatement(sql_atms);
+            ps_atms.setLong(1, id);
+            PreparedStatement ps_employees = conn.prepareStatement(sql_employees);
+            ps_employees.setLong(1, id);
+            PreparedStatement ps_users = conn.prepareStatement(sql_users);
+            ps_users.setString(1, bank.getName());
+
+            ResultSet rs_offices = ps_offices.executeQuery();
+            ResultSet rs_atms = ps_atms.executeQuery();
+            ResultSet rs_employees = ps_employees.executeQuery();
+            ResultSet rs_users = ps_users.executeQuery();
+
+            System.out.println("Bank: " + bank);
+            System.out.println("Offices:");
+            while (rs_offices.next()) {
+                System.out.println("\t" + Utils.builderBankOffice(rs_offices));
+            }
+            System.out.println("BankAtms:");
+            while (rs_atms.next()) {
+                System.out.println("\t" + Utils.builderBankAtm(rs_atms));
+            }
+            System.out.println("Employees:");
+            while (rs_employees.next()) {
+                System.out.println("\t" + Utils.builderEmployee(rs_employees));
+            }
+            System.out.println("Users:");
+            while (rs_users.next()) {
+                System.out.println("\t" + Utils.builderUser(rs_users));
+            }
+
         } catch (SQLException e) {
             e.printStackTrace();
         }

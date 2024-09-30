@@ -82,6 +82,21 @@ public class PaymentAccountDAO implements DAO<PaymentAccount, Long>{
             statement.setString(2, bankName);
             statement.setInt(3, 0);
             statement.executeUpdate();
+
+
+            String sql2 = "SELECT id FROM payment_account WHERE user_id=?";
+            PreparedStatement ps2 = conn.prepareStatement(sql2);
+            ps2.setLong(1, paymentAccount.getUserId());
+            ResultSet rs = ps2.executeQuery();
+
+            if (rs.next()) {
+                String sql3 = "UPDATE public.user SET payment_account_id=? WHERE id=?";
+
+                PreparedStatement ps3 = conn.prepareStatement(sql3);
+                ps3.setLong(1, rs.getLong("id"));
+                ps3.setLong(2, paymentAccount.getUserId());
+                ps3.executeUpdate();
+            }
         } catch (SQLException ex) {
             ex.printStackTrace();
         }

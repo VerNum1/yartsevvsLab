@@ -21,7 +21,7 @@ public class Utils {
                 .dateOfBirth(rs.getDate("date_of_birth"))
                 .workplace(rs.getString("workplace"))
                 .monthlyIncome(rs.getInt("monthly_income"))
-                .banksUsed((String[]) rs.getArray("banks_used").getArray())
+                .bankUsed(rs.getString("bank_used"))
                 .creditAccountId(rs.getLong("credit_account_id"))
                 .paymentAccountId(rs.getLong("payment_account_id"))
                 .creditRating(rs.getInt("credit_rating"))

@@ -11,4 +11,6 @@ public interface BankService {
     void update(Bank bank);
     void delete(long bankId);
     List<Bank> getAll();
+
+    public void outputBankInfo(Long id);
 }

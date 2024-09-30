@@ -2,6 +2,8 @@ package tech.reliab.course.toropchinda.bank.DAO;
 
 import tech.reliab.course.toropchinda.bank.DataSource.DataSource;
 import tech.reliab.course.toropchinda.bank.entity.User;
+import tech.reliab.course.toropchinda.bank.service.UserService;
+import tech.reliab.course.toropchinda.bank.service.impl.UserServiceImpl;
 import tech.reliab.course.toropchinda.bank.utils.Utils;
 
 import java.sql.*;
@@ -73,7 +75,7 @@ public class UserDAO implements DAO<User, Long>{
     @Override
     public void save(User user) {
         String sql = "INSERT INTO public.user (full_name, date_of_birth, workplace, monthly_income," +
-                " banks_used, credit_rating) VALUES (?,?,?,?,?,?)";
+                " bank_used, credit_rating) VALUES (?,?,?,?,?,?)";
 
         try (Connection conn = DataSource.getConnection();
              PreparedStatement statement = conn.prepareStatement(sql)) {
@@ -83,7 +85,7 @@ public class UserDAO implements DAO<User, Long>{
 
             int monthlyIncome = Utils.getRandomIntFromAToB(0, 10000);
             statement.setInt(4, monthlyIncome);
-            statement.setArray(5, conn.createArrayOf("CHARACTER VARYING", user.getBanksUsed()));
+            statement.setString(5, user.getBankUsed());
 
             int a, b;
             if (monthlyIncome <= 1000){
@@ -96,12 +98,11 @@ public class UserDAO implements DAO<User, Long>{
             statement.executeUpdate();
 
             // обновление кол-ва пользователей в банках
-            String sql4 = "UPDATE bank SET number_users = bank.number_users + 1 WHERE bank.name=?";
-            for (String name: user.getBanksUsed()){
-                PreparedStatement ps4 = conn.prepareStatement(sql4);
-                ps4.setString(1, name);
-                ps4.executeUpdate();
-            }
+            String sql2 = "UPDATE bank SET number_users = bank.number_users + 1 WHERE bank.name=?";
+
+            PreparedStatement ps2 = conn.prepareStatement(sql2);
+            ps2.setString(1, user.getBankUsed());
+            ps2.executeUpdate();
 
         } catch (SQLException ex) {
             ex.printStackTrace();
@@ -115,7 +116,7 @@ public class UserDAO implements DAO<User, Long>{
     @Override
     public void update(User user) {
         String updateQuery = "UPDATE public.user SET" +
-                " full_name=?, date_of_birth=?, workplace=?, monthly_income=?, banks_used=?" +
+                " full_name=?, date_of_birth=?, workplace=?, monthly_income=?, bank_used=?" +
                 ", credit_account_id=?, payment_account_id=?, credit_rating=? "
                 + "WHERE public.user.id=?";
 
@@ -125,7 +126,7 @@ public class UserDAO implements DAO<User, Long>{
             statement.setDate(2, (Date) user.getDateOfBirth());
             statement.setString(3, user.getWorkplace());
             statement.setInt(1, user.getMonthlyIncome());
-            statement.setArray(2, conn.createArrayOf("CHARACTER VARYING", user.getBanksUsed()));
+            statement.setString(2, user.getBankUsed());
             statement.setLong(3, user.getCreditAccountId());
             statement.setLong(1, user.getPaymentAccountId());
             statement.setInt(2, user.getCreditRating());
@@ -151,6 +152,38 @@ public class UserDAO implements DAO<User, Long>{
             PreparedStatement statement = conn.prepareStatement(sql);
             statement.setLong(1, id);
             statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void outputUserInfo(Long id){
+        UserService service = new UserServiceImpl();
+        User user = service.get(id);
+
+        String sql_payment = "SELECT * FROM payment_account WHERE id = ?";
+        String sql_credit = "SELECT * FROM credit_account WHERE id = ?";
+
+
+        try {
+            Connection conn = DataSource.getConnection();
+
+            PreparedStatement ps_payment = conn.prepareStatement(sql_payment);
+            ps_payment.setLong(1, user.getPaymentAccountId());
+            ResultSet rs_payment = ps_payment.executeQuery();
+
+            PreparedStatement ps_credit = conn.prepareStatement(sql_credit);
+            ps_credit.setLong(1, user.getCreditAccountId());
+            ResultSet rs_credit = ps_credit.executeQuery();
+
+            System.out.println("User: " + user);
+            if (rs_payment.next()){
+                System.out.println("PaymentAccount: " + Utils.builderPaymentAccount(rs_payment));
+            }
+            if (rs_credit.next()){
+                System.out.println("CreditAccount: " + Utils.builderCreditAccount(rs_credit));
+            }
+
         } catch (SQLException e) {
             e.printStackTrace();
         }

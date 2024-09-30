@@ -36,4 +36,7 @@ public class BankServiceImpl implements BankService {
     public void delete(long bankId) {
         bankDAO.delete(bankId);
     }
+
+    @Override
+    public void outputBankInfo(Long id){ bankDAO.outputAllBankInfo(id); }
 }

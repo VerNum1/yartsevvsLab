@@ -99,6 +99,20 @@ public class CreditAccountDAO implements DAO<CreditAccount, Long> {
             statement.setLong(9, creditAccount.getEmployeeId());
             statement.setLong(10, creditAccount.getPaymentAccountId());
             statement.executeUpdate();
+
+            String sql3 = "SELECT id FROM credit_account WHERE user_id=?";
+            PreparedStatement ps3 = conn.prepareStatement(sql3);
+            ps3.setLong(1, creditAccount.getUserId());
+            ResultSet rs = ps3.executeQuery();
+
+            if (rs.next()) {
+                String sql4 = "UPDATE public.user SET credit_account_id=? WHERE id=?";
+
+                PreparedStatement ps4 = conn.prepareStatement(sql4);
+                ps4.setLong(1, rs.getLong("id"));
+                ps4.setLong(2, creditAccount.getUserId());
+                ps4.executeUpdate();
+            }
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
