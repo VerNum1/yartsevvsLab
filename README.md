@@ -11,3 +11,9 @@
 
 Банкоматы:
 ![image](https://github.com/user-attachments/assets/04a92288-27d4-4e41-982e-b56b86f19f1f)
+
+Платежные аккаунты:
+Создание:
+![image](https://github.com/user-attachments/assets/58956d4a-f1fe-4362-a477-813f965a6124)
+Результат:
+![image](https://github.com/user-attachments/assets/a4b9531f-e43a-46ea-926e-c88d54da28f8)
