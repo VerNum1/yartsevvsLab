@@ -14,6 +14,11 @@
 
 Платежные аккаунты:
 Создание:
+
 ![image](https://github.com/user-attachments/assets/58956d4a-f1fe-4362-a477-813f965a6124)
 Результат:
+
 ![image](https://github.com/user-attachments/assets/a4b9531f-e43a-46ea-926e-c88d54da28f8)
+
+Кредитные аккаунты:
+![image](https://github.com/user-attachments/assets/fd1cb1bf-785d-47c6-8967-8b39404a1c3c)
