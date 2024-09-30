@@ -22,3 +22,10 @@
 
 Кредитные аккаунты:
 ![image](https://github.com/user-attachments/assets/fd1cb1bf-785d-47c6-8967-8b39404a1c3c)
+
+Вывод информации о Bank:
+![image](https://github.com/user-attachments/assets/83368d76-1813-455c-8d7d-bb9ff90dd4d5)
+
+
+Вывод информации о User:
+![image](https://github.com/user-attachments/assets/e1ee96e9-caee-4bea-809d-92f80297a3cc)
